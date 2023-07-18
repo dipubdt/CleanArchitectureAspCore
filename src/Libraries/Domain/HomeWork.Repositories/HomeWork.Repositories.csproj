@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructur\HomeWork.Infrastructur\HomeWork.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructur\TaskManagement.Service.Models\HomeWork.Service.Models.csproj" />
+    <ProjectReference Include="..\HomeWork.Models\HomeWork.Models.csproj" />
+    <ProjectReference Include="..\HomeWork.Shared\HomeWork.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

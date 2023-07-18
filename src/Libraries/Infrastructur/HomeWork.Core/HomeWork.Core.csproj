@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="FluentValidation" Version="11.6.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\HomeWork.Models\HomeWork.Models.csproj" />
+    <ProjectReference Include="..\..\Domain\HomeWork.Repositories\HomeWork.Repositories.csproj" />
+    <ProjectReference Include="..\HomeWork.Infrastructur\HomeWork.Infrastructure.csproj" />
+    <ProjectReference Include="..\TaskManagement.Service.Models\HomeWork.Service.Models.csproj" />
+  </ItemGroup>
+
+</Project>
