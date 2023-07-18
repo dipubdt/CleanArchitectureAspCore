@@ -4,59 +4,44 @@ using HomeWork.Service.Models;
 using HomeWork.Repositories.Interfaces;
 using JetBrains.Annotations;
 using FluentValidation;
-using System.ComponentModel.DataAnnotations;
 
 namespace HomeWork.Core.Query;
 
 public class GetById
 {
-	public class GetByIdQuery : IRequest<VmLaptop>
+	public class GetLaptopQueryById : IRequest<VmLaptop>
 	{
 		[JsonConstructor]
-		public GetByIdQuery(int id)
+		public GetLaptopQueryById(int id)
 		{
 			Id = id;
 		}
-
 		public int Id { get; set; }
 	}
-
-	[UsedImplicitly]
-	public class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, VmLaptop>
+	public class GetStudentQueryByIdHandler : IRequestHandler<GetLaptopQueryById, Service.Models.VmLaptop>
 	{
 		private readonly ILaptopRepository _laptopRepository;
-		//private readonly IValidator _validator;
+		private readonly IValidator<GetLaptopQueryById> _validator;
 
-
-		public GetByIdQueryHandler(ILaptopRepository laptopRepository)
+		public GetStudentQueryByIdHandler(ILaptopRepository laptopRepository, IValidator<GetLaptopQueryById> validator)
 		{
 			_laptopRepository = laptopRepository;
-			//_validator = validator;
-
+			_validator = validator;
 
 		}
-
-		public async Task<VmLaptop> Handle(GetByIdQuery request, CancellationToken cancellationToken)
+		public async Task<VmLaptop> Handle(GetLaptopQueryById request, CancellationToken cancellationToken)
 		{
-			//var validationResult = await _validator.ValidateAsync(request, cancellationToken);
-			//if (!validationResult.IsValid)
-			//{
-			//	throw new ValidationException(validationResult.Errors);
-			//}
-
-			var laptop = await _laptopRepository.GetById(request.Id);
-			return laptop;
+			var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+			if (!validationResult.IsValid)
+				throw new ValidationException(validationResult.Errors);
+			return await _laptopRepository.GetById(request.Id);
 		}
 	}
-
-
-	//public class GetByIdQueryValidator : AbstractValidator<GetByIdQuery>
-	//{
-	//	public GetByIdQueryValidator()
-	//	{
-	//		RuleFor(x => x.Id).NotEmpty().WithMessage("Id is required.");
-	//	}
-	//}
-
-
+	public class GetLaptopByIdQueryValidator : AbstractValidator<GetLaptopQueryById>
+	{
+		public GetLaptopByIdQueryValidator()
+		{
+			RuleFor(x => x.Id).NotEmpty().WithMessage("Id is required");
+		}
+	}
 }

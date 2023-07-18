@@ -6,7 +6,10 @@ using HomeWork.Repositories.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+
+using HomeWork.Core.Behavior;
 using Microsoft.Extensions.DependencyInjection;
+using FluentValidation;
 
 namespace Homework.ServiceCollectionExtention;
 	public static class ConfigureServices
@@ -20,11 +23,28 @@ namespace Homework.ServiceCollectionExtention;
 
 		services.AddAutoMapper(typeof(CommonMapper).Assembly);
 		services.AddTransient<ILaptopRepository, LaptopRepository>();
-			services.AddMediatR(typeof(ICore).Assembly);
+		////services.AddMediatR.(typeof(ICore).Assembly);
 
 
-		//services.AddMediatR(options=>options.regis)
-			return services;
+		//	//services.AddMediatR(options=>options.regis)
+
+		//services.AddMediatR(cfg =>
+		//{
+		//	cfg.RegisterServicesFromAssemblies(typeof(ICore).Assembly);
+		//	cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+
+		//		});
+		services.AddMediatR(options => options.RegisterServicesFromAssemblies(typeof(ICore).Assembly));
+		services.AddValidatorsFromAssembly(typeof(ICore).Assembly);
+		services.AddMediatR(cfg =>
+		{
+			cfg.RegisterServicesFromAssemblies(typeof(ICore).Assembly);
+			cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+		});
+
+
+
+		return services;
 		}
 	}
 

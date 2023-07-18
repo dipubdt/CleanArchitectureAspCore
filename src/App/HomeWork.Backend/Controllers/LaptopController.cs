@@ -30,7 +30,7 @@ public class LaptopController : ControllerBase
 
 	{
 
-		var data= await _mediator.Send(new GetByIdQuery(id));
+		var data= await _mediator.Send(new GetLaptopQueryById(id));
 
 		return(data);
 	}
