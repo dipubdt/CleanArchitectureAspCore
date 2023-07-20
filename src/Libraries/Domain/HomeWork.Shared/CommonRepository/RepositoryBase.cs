@@ -1,9 +1,4 @@
-﻿
-
-
-using AutoMapper;
-using HomeWork.Shared;
-using HomeWork.Shared.CommonRepository;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 namespace HomeWork.Shared.CommonRepository;
 
@@ -37,6 +32,8 @@ public abstract class RepositoryBase<TEntity, IModel, T> : IRepository<TEntity, 
 		{
 			throw new InvalidOperationException("Data  not found");
 		}
+
+
 
 		DbSet.Remove(entity);
 		await _dbContext.SaveChangesAsync();

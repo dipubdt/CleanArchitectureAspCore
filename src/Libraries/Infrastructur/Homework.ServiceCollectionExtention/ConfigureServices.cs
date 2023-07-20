@@ -23,17 +23,7 @@ namespace Homework.ServiceCollectionExtention;
 
 		services.AddAutoMapper(typeof(CommonMapper).Assembly);
 		services.AddTransient<ILaptopRepository, LaptopRepository>();
-		////services.AddMediatR.(typeof(ICore).Assembly);
-
-
-		//	//services.AddMediatR(options=>options.regis)
-
-		//services.AddMediatR(cfg =>
-		//{
-		//	cfg.RegisterServicesFromAssemblies(typeof(ICore).Assembly);
-		//	cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-
-		//		});
+		
 		services.AddMediatR(options => options.RegisterServicesFromAssemblies(typeof(ICore).Assembly));
 		services.AddValidatorsFromAssembly(typeof(ICore).Assembly);
 		services.AddMediatR(cfg =>

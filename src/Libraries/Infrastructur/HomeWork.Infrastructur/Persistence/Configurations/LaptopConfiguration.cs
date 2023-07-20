@@ -10,6 +10,7 @@ internal class LaptopConfiguration : IEntityTypeConfiguration<Laptop>
 	public void Configure(EntityTypeBuilder<Laptop> builder)
 	{
 		builder.ToTable("Laptops");
+		
 		builder.HasKey(x => x.Id);
 		builder.HasData(new
 		{

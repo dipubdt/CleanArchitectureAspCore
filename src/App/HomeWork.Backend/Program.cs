@@ -8,7 +8,32 @@ builder.Services.AddControllers();
 //builder.Services.AddServices(builder.Configuration);
 builder.Services.AddExtention(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen( option=>
+
+{
+	option.SwaggerDoc("v1",
+
+		 new Microsoft.OpenApi.Models.OpenApiInfo
+
+		 {
+
+			 Title = " Swager Documentention",
+			 Version = "v1",	
+			 Description="Explain How to documentation",
+			 Contact= new Microsoft.OpenApi.Models.OpenApiContact
+			 {
+				 Name="Dipan",
+				 Email="dipan@gmail.com"
+			 }
+
+		 }
+
+		);
+
+}
+
+
+);
 
 var app = builder.Build();
 
@@ -16,7 +41,19 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
-	app.UseSwaggerUI();
+	app.UseSwaggerUI( a=>a.SwaggerEndpoint("/swagger/v1/swagger.json",
+		"Swagger Demo Documentation v1"	
+		));
+
+	app.UseReDoc(a =>
+	{
+		a.DocumentTitle = "swagger Demo Documentation";
+		a.SpecUrl = "/swagger/v1/swagger.json";
+
+	}
+
+
+		);
 }
 
 app.UseHttpsRedirection();

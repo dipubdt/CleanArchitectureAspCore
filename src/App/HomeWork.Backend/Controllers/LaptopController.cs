@@ -35,8 +35,8 @@ public class LaptopController : ControllerBase
 		return(data);
 	}
 
-	[HttpPost("Create")]
-	public async Task<ActionResult<VmLaptop>> Create([FromBody] VmLaptop laptop)
+	[HttpPost]
+	public async Task<ActionResult<VmLaptop>> Post([FromBody] VmLaptop laptop)
 	{
 		var Data = await _mediator.Send(new CreateLaptopCommand(laptop));
 		return Ok(Data);
