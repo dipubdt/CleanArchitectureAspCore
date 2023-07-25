@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- bootstrap css -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+        <style>  
+    
+        form {
+    max-width: 50%;
+}
+
+body{
+
+    margin-top: 2%;
+
+}
+
+th{
+    margin-top:2px;
+
+color:white;
+}
+        
+        </style>
+    </head>
+
+<body>
+
+    <div class="container">
+      <div >
+                 
+            <form action="/submit" method="post">
+
+                <div class="row">
+                    <div class="col">
+                <label for="model">Model:</label>
+                <input type="hidden"  id="Id" name="Id" >
+                <input type="text" class="form-control" id="model" name="Model" required><br>       
+                <label for="screenSize">Screen Size (inches):</label>
+                <input class="form-control" type="text" id="screenSize" name="ScreenSizeInches" required><br>      
+                    </div>
+                    <div class="col">
+                <label for="ramSize">RAM Size (GB):</label>
+                <input class="form-control" type="number" id="ramSize" name="RAMSizeGB" required><br>
+                <label for="color">Color:</label>
+                <input  class="form-control"type="text" id="color" name="Color" required><br>       
+                <input class="bg-success text-light p-2" type="submit" id="submitData"  value="Submit">
+            </div>
+            </div>
+            </form>
+
+            <table class="data table ">
+                <tr class="bg-secondary">
+                    <th  scope="col">Id</th>
+                    <th scope="col">Model</th>
+                    <th scope="col">Screen Size</th>
+                    <th scope="col">Ram</th>
+                    <th scope="col">Color</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Action</th>
+                </tr>                    
+            </table>
+
+        </div>
+            <div >
+              
+            </div>
+      </div>
+
+        <br>
+     
+    </div>
+
+    <script>
+        const productEle = document.querySelector('.data')
+        const apiUrl = 'https://localhost:7275/api';
+        // let bearerToken;
+        // const getToken = (a,b) => {
+
+        //     return fetch(`${apiUrl}/Token`, {
+        //         method: "POST",
+        //         body: JSON.stringify({ email: "administrator@localhost", password: "Administrator1!" }),
+        //         headers: {
+        //             "Content-type": "application/json"
+        //         }
+        //     }).then(response => {
+        //         if (response.status === 200) {
+        //             return response.json();
+        //         } else {
+        //             throw new Error('Something went wrong on api server!');
+        //         }
+        //     }).then(response => {
+        //         console.log(response);
+        //         bearerToken = response;
+        //         localStorage.setItem('token', bearerToken.token);
+        //     })
+        // }
+
+
+
+        // function isTokenExpired(bearerToken) {
+        //     const base64Url = token.split(".")[1];
+        //     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+        //     const jsonPayload = decodeURIComponent(
+        //         atob(base64)
+        //             .split("")
+        //             .map(function (c) {
+        //                 return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        //             })
+        //             .join("")
+        //     );
+
+        //     const { exp } = JSON.parse(jsonPayload);
+        //     const expired = Date.now() >= exp * 1000
+        //     console.log(expired);
+        //     return expired
+        // }
+
+        const getAllProduct = () => {
+            // if(isTokenExpired)
+            // {
+            //     getToken()
+            // }
+            return fetch(`${apiUrl}/Laptop`, {
+                method: 'GET',
+                headers: {
+                    // 'Authorization': `bearer ${bearerToken}`
+                },
+            }).then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    throw new Error('Something went wrong on api server!');
+                }
+            }).then(response => {
+                response.map((p, index) => {
+
+                    // p.productColor;
+
+                    // console.log(p.productColor);
+
+                    displayProduct(p)
+                })
+            })
+        }
+        ///start post method 
+
+        const postdata = (model, screenSize, ramSize, color) => {
+            // if(isTokenExpired)
+            // {
+            //     getToken()
+            // }   
+            fetch(`${apiUrl}/Laptop`, {
+                method: "POST",
+                body: JSON.stringify({
+                    model: model, 
+                    screenSizeInches: screenSize, 
+                    ramSizeGB: ramSize,
+                    color: color
+                }),
+                headers: {
+                    // 'Authorization': `bearer ${bearerToken}`,
+                    "Content-type": "application/json"
+                }
+            }).then(response => {
+                console.log(response.body);
+                 window.location.reload()
+            })
+        }
+
+        const Deletedata = (id) => {
+           
+            
+            fetch(`${apiUrl}/Laptop/${id}`, {
+                method: "Delete",
+            }).then(response => {
+                console.log(response);
+                window.alert("item deleted successful")
+                window.location.reload()
+            })
+        }  
+        const Updatedata = (id,model, screenSize, ramSize, color) => {
+            // debugger
+            fetch(`${apiUrl}/Laptop/${id}`, {
+                method: "PUT",
+                body: JSON.stringify({ id:id,model: model, screenSizeInches: screenSize, ramSizeGB: ramSize,
+                    color: color
+                }),
+                headers: { 
+                    // 'Authorization': `bearer ${bearerToken}`,
+                    "Content-type": "application/json"
+                }
+            }).then(response => {
+                console.log(response.body);
+                window.location.reload()
+            })
+        }
+
+
+        // console.log(postdata())
+
+
+
+        ///end post methpod 
+
+        // getToken();
+
+    const postBtn = document.getElementById("btn")
+    const submitButton = document.getElementById("submitData");
+
+    submitButton.addEventListener('click', function () {
+
+       
+  const formId= document.getElementById('Id').value;
+    const modelValue = document.getElementById('model').value;
+    const screenSizeValue = document.getElementById('screenSize').value;
+    const ramSizeValue = document.getElementById('ramSize').value;
+    const colorValue = document.getElementById('color').value;
+console.log(formId);
+
+if (formId!==""){
+   
+    Updatedata(formId,modelValue,screenSizeValue,ramSizeValue,colorValue)  
+}
+else 
+{
+    postdata(modelValue,screenSizeValue,ramSizeValue,colorValue)
+}  
+});
+
+    getAllProduct()
+
+    const Databind =(a,b,c,d,e) => {
+        // debugger
+        const formId= document.getElementById('Id');
+    const modelValue = document.getElementById('model');
+    const screenSizeValue = document.getElementById('screenSize');
+    const ramSizeValue = document.getElementById('ramSize');
+    const colorValue = document.getElementById('color');
+    formId.value=a;
+    modelValue.value   = b;
+    screenSizeValue.value    = c;
+    ramSizeValue.value   = d;
+    colorValue.value   = e;
+    
+        }  
+        const displayProduct = (product) => {
+            
+            const singleproduct = document.createElement('tr')
+            singleproduct.classList.add('col-md-4')
+            singleproduct.innerHTML += `
+            
+            <td> ${product.id} </td>
+            <td> ${product.model} </td>
+            <td> ${product.screenSizeInches} </td>
+            <td> ${product.ramSizeGB} </td>
+            <td> ${product.color} </td>
+            <td > <button  class="bg-danger" onclick="Deletedata(${product.id})">  Delete </button></td>
+            <td> <button  class="bg-primary" onclick="Databind('${product.id}','${product.model}','${product.screenSizeInches}','${product.ramSizeGB}'
+                , '${product.color}' )">  Update </button></td>
+
+           `
+            productEle.appendChild(singleproduct)
+        }
+    </script>
+</body>
+
+</html>
