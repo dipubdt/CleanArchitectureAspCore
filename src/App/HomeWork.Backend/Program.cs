@@ -8,13 +8,23 @@ builder.Services.AddControllers();
 //builder.Services.AddServices(builder.Configuration);
 builder.Services.AddExtention(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddCors(options =>
+//{
+//	options.AddDefaultPolicy(
+//		builder =>
+//		{
+//			builder.WithOrigins("https://localhost:44351", "http://localhost:4200")
+//								.AllowAnyHeader()
+//								.AllowAnyMethod();
+//		});
+//});
+
+builder.Services.AddCors(p => p.AddPolicy("cors", builder => builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()));
+
+
 builder.Services.AddSwaggerGen( option=>
-
-{
-	option.SwaggerDoc("v1",
-
+{	option.SwaggerDoc("v1",
 		 new Microsoft.OpenApi.Models.OpenApiInfo
-
 		 {
 
 			 Title = " Swager Documentention",
@@ -29,9 +39,7 @@ builder.Services.AddSwaggerGen( option=>
 		 }
 
 		);
-
 }
-
 
 );
 
@@ -44,7 +52,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI( a=>a.SwaggerEndpoint("/swagger/v1/swagger.json",
 		"Swagger Demo Documentation v1"	
 		));
-
+	
 	app.UseReDoc(a =>
 	{
 		a.DocumentTitle = "swagger Demo Documentation";
@@ -54,8 +62,10 @@ if (app.Environment.IsDevelopment())
 
 
 		);
-}
 
+
+}
+app.UseCors("cors");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
