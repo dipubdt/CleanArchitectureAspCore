@@ -1,74 +1,65 @@
-﻿using HomeWork.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using HomeWork.Service.Models;
-using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using static HomeWork.Core.Command.CreateLaptop;
-using static HomeWork.Core.Command.DeleteLaptop;
-using static HomeWork.Core.Command.UpdateLaptop;
-using static HomeWork.Core.Query.GetById;
-using static HomeWork.Core.Query.GetlaptopList;
+using HomeWork.Core.Query;
+using HomeWork.Core.Command;
+using HomeWork.Shared.Model;
 
 namespace HomeWork.Backend.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class LaptopController : ControllerBase
+
+public class LaptopController : ApiControllerBase
 {
 
-	private readonly IMediator _mediator;
-
-	public LaptopController(IMediator mediator)
-	{
-		_mediator = mediator;
-	}
-
-
 	[HttpGet("{id:int}")]
-
-	public async Task<ActionResult<VmLaptop>> Get(int id)
-
+	public async Task<ActionResult<Service.Models.VmLaptop>> Get(int id)
 	{
+		return await HandleQueryAsync(new GetLaptopQueryById(id));
 
-		var data= await _mediator.Send(new GetLaptopQueryById(id));
-
-		return(data);
 	}
 
 	[HttpPost]
-	public async Task<ActionResult<VmLaptop>> Post([FromBody] VmLaptop laptop)
+	public async Task<ActionResult<VmLaptop>> Post([FromBody] CreateLaptopCommand laptop)
 	{
-		var Data = await _mediator.Send(new CreateLaptopCommand(laptop));
-		return Ok(Data);
+		return await HandleCommandAsync( laptop);
 	}
 
 	[HttpPut("{id:int}")]
 	public async Task<ActionResult<VmLaptop>> Update([FromBody] VmLaptop laptop, int id)
 	{
-		var Data = await _mediator.Send(new UpdateLaptopCommand(id, laptop));
-		return Ok(Data);
+	
+
+		return await HandleCommandAsync(new UpdateLaptopCommand(id, laptop));
+
 	}
 
 	[HttpDelete("{id:int}")]
 
 	public async Task<ActionResult<VmLaptop>> Delete(int id)
 
-
 	{
-		
-		return await _mediator.Send(new DeleteLaptopQuery(id));
+
+		return await HandleCommandAsync(new DeleteLaptopQuery(id));
 	}
 
+	//[HttpGet]
+
+	//public async Task<ActionResult<VmLaptop>> Get()
+
+	//{
+
+	//	return await HandleQueryAsync(new GetlaptopListQuery());
+
+
+	//}
 	[HttpGet]
-
-	public async Task<ActionResult<VmLaptop>> Get()
-
+	public async Task<ActionResult> Get()
 	{
 
-		var data = await _mediator.Send(new GetlaptopListQuery());
-		return Ok(data);
-
+		return await HandleQueryAsync(new GetlaptopListQuery());
+		//var query = new GetlaptopListQuery();
+		//return await HandleQueryAsync<QueryResult<IEnumerable<VmLaptop>>>(query);
 	}
+
 
 
 

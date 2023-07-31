@@ -3,18 +3,18 @@
 using AutoMapper;
 using HomeWork.Repositories.Interfaces;
 using HomeWork.Service.Models;
+using HomeWork.Shared.Model;
 using MediatR;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HomeWork.Core.Query;
 
-public class GetlaptopList
+
+public record GetlaptopListQuery() : IRequest<QueryResult<IEnumerable<VmLaptop>>> { }
+
+
+	public class GetlaptopListQueryHandler : IRequestHandler<GetlaptopListQuery, QueryResult<IEnumerable<VmLaptop>>>
 {
-	public record GetlaptopListQuery() : IRequest<IEnumerable<VmLaptop>>;
-
-
-
-	public class GetlaptopListQueryHandler : IRequestHandler<GetlaptopListQuery, IEnumerable<VmLaptop>>
-	{
 
 		private readonly ILaptopRepository _laptopRepository;
 		private readonly IMapper _mapper;
@@ -25,14 +25,13 @@ public class GetlaptopList
 			_mapper = mapper;
 				
         }
-
-		public async Task<IEnumerable<VmLaptop>> Handle(GetlaptopListQuery request, CancellationToken cancellationToken)
+		public async Task<QueryResult<IEnumerable<VmLaptop>>> Handle(GetlaptopListQuery request, CancellationToken cancellationToken)
 		{
-
 			var Data = await _laptopRepository.GetList();
-			return Data;
+			
+		return new QueryResult<IEnumerable<VmLaptop>>(Data, QueryResultTypeEnum.Success);
 
-		}
+	}
 	}
 
-}
+

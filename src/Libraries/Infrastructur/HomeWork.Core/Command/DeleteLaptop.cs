@@ -2,16 +2,16 @@
 using AutoMapper;
 using HomeWork.Repositories.Interfaces;
 using HomeWork.Service.Models;
+using HomeWork.Shared.Model;
 using MediatR;
 
 namespace HomeWork.Core.Command;
 
-public class DeleteLaptop
-{
-	public record DeleteLaptopQuery ( int id):IRequest<VmLaptop>;
+
+	public record DeleteLaptopQuery ( int id) : IRequest<CommandResult<VmLaptop>> { }
 
 
-	public class DeleteLaptopQueryHandler :IRequestHandler<DeleteLaptopQuery, VmLaptop>
+	public class DeleteLaptopQueryHandler :IRequestHandler<DeleteLaptopQuery, CommandResult<VmLaptop>>
 
 	{
 		private readonly ILaptopRepository _laptopRepository;
@@ -24,18 +24,14 @@ public class DeleteLaptop
 			_laptopRepository = laptopRepository;
 
 			_mapper= mapper;
-
-
 		}
 
-		public async Task<VmLaptop> Handle(DeleteLaptopQuery request, CancellationToken cancellationToken)
+		public async Task<CommandResult<VmLaptop>> Handle(DeleteLaptopQuery request, CancellationToken cancellationToken)
 		{
 			 await _laptopRepository.Delete(request.id);
-
-			return new VmLaptop();
-		}
+		return new CommandResult<VmLaptop>(new VmLaptop(), CommandResultTypeEnum.Success);
+	}
 	}
 
 
 
-}
