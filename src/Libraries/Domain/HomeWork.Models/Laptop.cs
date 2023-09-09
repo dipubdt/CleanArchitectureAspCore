@@ -18,7 +18,7 @@ public class Laptop: BaseEntity, IEntity
 	/// <summary>
 	/// RAMSizeGB
 	/// </summary>
-	public int RAMSizeGB { get; set; }
+	public int? RAMSizeGB { get; set; }
 	/// <summary>
 	/// Color
 	/// </summary>
